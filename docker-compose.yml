@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+
+  air:
+    image: online-shopping-cart
+    build:
+      context: .
+      dockerfile: Dockerfile.air
+    environment:
+      - "TZ=Asia/Jakarta"
+      - "air_wd=/app"
+    ports:
+      - "${BACKEND_LISTEN_PORT:-8080}:8080"
+    volumes:
+      - ".:/app"
+      - "go-pkg-data:/go/pkg"
+    entrypoint: >
+      /bin/sh -c '
+      /usr/local/bin/wait-for-it.sh mysql:3306 -t 300;
+      /go/bin/air -- serve;
+      '
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: varian
+      MYSQL_DATABASE: online-shopping-cart
+      MYSQL_USER: varian
+      MYSQL_PASSWORD: varian
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - "./initdb:/docker-entrypoint-initdb.d:ro"
+    ports:
+      - "3306:3306"
+
+networks:
+  default:
+    driver: bridge
+
+volumes:
+  mysql-data:
+  go-pkg-data:
