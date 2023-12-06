@@ -17,6 +17,7 @@ type Server struct {
 
 func NewServer(listenAddress string,
 	home *controllers.HomeController,
+	account *controllers.AccountController,
 ) *Server {
 
 	router := gin.Default()
@@ -24,6 +25,8 @@ func NewServer(listenAddress string,
 	// Http Routings
 	//
 	router.GET("/", home.GetHome)
+	router.POST("/register", account.PostRegister)
+	router.POST("/login", account.PostLogin)
 
 	httpServer := &http.Server{
 		Addr:              listenAddress,

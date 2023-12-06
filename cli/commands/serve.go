@@ -10,6 +10,7 @@ import (
 
 	"github.com/avarian/online-shopping-cart/controllers"
 	"github.com/avarian/online-shopping-cart/delivery/http"
+	"github.com/avarian/online-shopping-cart/util"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -33,20 +34,25 @@ func serveCommand() (err error) {
 	// Initialize connections
 
 	// Mysql database
-	// db := newMysqlDB("mysql")
+	db := newMysqlDB("mysql")
 
 	// Redis client
 	// redis := newRedisClient(viper.GetString("redis.url"))
 	// defer redis.Close()
 	// jobs.SetRedisQueue(work.NewRedisQueue(redis))
 
+	// validatorTranslate
+	validator := util.ValidatorTranslate()
+
 	//
 	// Initialize Controllers
 	//
 	home := controllers.NewHomeController()
+	account := controllers.NewAccountController(db, validator, viper.GetString("jwt_secret"))
 
 	server := http.NewServer(viper.GetString("listen_address"),
 		home,
+		account,
 	)
 
 	//

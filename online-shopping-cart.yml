@@ -43,3 +43,5 @@ messenger:
   infobip_api_key: ""
   infobip_callback_url: ""
   infobip_sender: ""
+
+jwt_secret: "aiwyImvy7vGt2M70XmbL3lzpWQbG3kfu"

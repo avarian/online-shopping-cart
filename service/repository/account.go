@@ -166,3 +166,14 @@ func (s *AccountRepository) AssignData(table *model.Account, data model.Account)
 		}
 	}
 }
+
+func (s *AccountRepository) OneByEmail(email string, preload ...string) (model.Account, *gorm.DB) {
+	var table model.Account
+	tx := s.db.Where("email = ?", email)
+	for _, v := range preload {
+		tx.Preload(v)
+	}
+	query := tx.Find(&table)
+
+	return table, query
+}
