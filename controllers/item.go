@@ -40,6 +40,16 @@ func NewItemController(db *gorm.DB, validator *util.Validator) *ItemController {
 	}
 }
 
+// GetAllItem	goDocs
+// @Summary      get all item
+// @Description  get all item need credentials
+// @Tags         Item
+// @Param				 Authorization	header		string	true	"Bearer {token}" default(Bearer {token})
+// @Param				 name	query		string	false	"name item"
+// @Param				 min_price	query		string	false	"min price item"
+// @Param				 max_price	query		string	false	"max price item"
+// @Produce      application/json
+// @Router       /item/all [get]
 func (s *ItemController) GetItems(c *gin.Context) {
 	// log
 	logCtx := log.WithFields(log.Fields{
@@ -64,6 +74,14 @@ func (s *ItemController) GetItems(c *gin.Context) {
 	})
 }
 
+// GetOneItemDetail	goDocs
+// @Summary      get one item detail
+// @Description  get one item detail, need credentials
+// @Tags         Item
+// @Param				 id path int true "get detail by id"
+// @Param				 Authorization	header		string	true	"Bearer {token}" default(Bearer {token})
+// @Produce      application/json
+// @Router       /item/{id} [get]
 func (s *ItemController) GetItemDetail(c *gin.Context) {
 	// log
 	logCtx := log.WithFields(log.Fields{
@@ -96,6 +114,14 @@ func (s *ItemController) GetItemDetail(c *gin.Context) {
 	})
 }
 
+// AddItem	goDocs
+// @Summary      add item for admin user
+// @Description  add item for admin user, need credential ADMIN user only
+// @Tags         Item
+// @Param				 Authorization	header		string	true	"Bearer {token}" default(Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQGV4YW1wbGUuY29tIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTcyNTU5ODc3OX0.JamULnKlo3q38ZgIhfBOUI8U2WEv4nNfaLYvodtIx0c)
+// @Param        tags body PostCreateItemRequest true "Body Request"
+// @Produce      application/json
+// @Router       /item [post]
 func (s *ItemController) PostCreateItem(c *gin.Context) {
 	// bind data
 	var req PostCreateItemRequest
@@ -139,9 +165,18 @@ func (s *ItemController) PostCreateItem(c *gin.Context) {
 	})
 }
 
+// EditItem	goDocs
+// @Summary      edit item for admin user
+// @Description  edit item for admin user, need credential ADMIN user only
+// @Tags         Item
+// @Param				 id path int true "edit by id"
+// @Param				 Authorization	header		string	true	"Bearer {token}" default(Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQGV4YW1wbGUuY29tIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTcyNTU5ODc3OX0.JamULnKlo3q38ZgIhfBOUI8U2WEv4nNfaLYvodtIx0c)
+// @Param        tags body PutEditItemRequest true "Body Request"
+// @Produce      application/json
+// @Router       /item/{id} [put]
 func (s *ItemController) PutEditItem(c *gin.Context) {
 	// bind data
-	var req PostCreateItemRequest
+	var req PutEditItemRequest
 	if err := c.ShouldBind(&req); err != nil {
 		log.WithField("reason", err).Error("error Binding")
 		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
@@ -190,6 +225,14 @@ func (s *ItemController) PutEditItem(c *gin.Context) {
 	})
 }
 
+// DeleteItem	goDocs
+// @Summary      delete item for admin user
+// @Description  delete item for admin user, need credential ADMIN user only
+// @Tags         Item
+// @Param				 id path int true "delete by id"
+// @Param				 Authorization	header		string	true	"Bearer {token}" default(Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQGV4YW1wbGUuY29tIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTcyNTU5ODc3OX0.JamULnKlo3q38ZgIhfBOUI8U2WEv4nNfaLYvodtIx0c)
+// @Produce      application/json
+// @Router       /item/{id} [delete]
 func (s *ItemController) DeleteItem(c *gin.Context) {
 	// log
 	logCtx := log.WithFields(log.Fields{

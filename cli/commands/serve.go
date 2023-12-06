@@ -52,6 +52,7 @@ func serveCommand() (err error) {
 	item := controllers.NewItemController(db, validator)
 	cart := controllers.NewCartController(db, validator)
 	voucher := controllers.NewVoucherController(db, validator)
+	order := controllers.NewOrderController(db, validator)
 
 	server := http.NewServer(viper.GetString("listen_address"),
 		home,
@@ -59,6 +60,7 @@ func serveCommand() (err error) {
 		item,
 		cart,
 		voucher,
+		order,
 	)
 
 	//

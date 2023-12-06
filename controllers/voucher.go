@@ -42,6 +42,14 @@ func NewVoucherController(db *gorm.DB, validator *util.Validator) *VoucherContro
 	}
 }
 
+// GetAllVoucher	goDocs
+// @Summary      get all voucher
+// @Description  get all voucher need credentials
+// @Tags         Voucher
+// @Param				 Authorization	header		string	true	"Bearer {token}" default(Bearer {token})
+// @Param				 code	query		string	false	"code voucher"
+// @Produce      application/json
+// @Router       /voucher/all [get]
 func (s *VoucherController) GetVouchers(c *gin.Context) {
 	// log
 	logCtx := log.WithFields(log.Fields{
@@ -66,6 +74,14 @@ func (s *VoucherController) GetVouchers(c *gin.Context) {
 	})
 }
 
+// GetOneVoucherDetail	goDocs
+// @Summary      get one voucher detail
+// @Description  get one voucher detail, need credentials
+// @Tags         Voucher
+// @Param				 id path int true "get detail by id"
+// @Param				 Authorization	header		string	true	"Bearer {token}" default(Bearer {token})
+// @Produce      application/json
+// @Router       /voucher/{id} [get]
 func (s *VoucherController) GetVoucherDetail(c *gin.Context) {
 	// log
 	logCtx := log.WithFields(log.Fields{
@@ -98,6 +114,14 @@ func (s *VoucherController) GetVoucherDetail(c *gin.Context) {
 	})
 }
 
+// AddVoucher	goDocs
+// @Summary      add voucher for admin user
+// @Description  add voucher for admin user, need credential ADMIN user only
+// @Tags         Voucher
+// @Param				 Authorization	header		string	true	"Bearer {token}" default(Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQGV4YW1wbGUuY29tIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTcyNTU5ODc3OX0.JamULnKlo3q38ZgIhfBOUI8U2WEv4nNfaLYvodtIx0c)
+// @Param        tags body PostCreateVoucherRequest true "Body Request"
+// @Produce      application/json
+// @Router       /voucher [post]
 func (s *VoucherController) PostCreateVoucher(c *gin.Context) {
 	// bind data
 	var req PostCreateVoucherRequest
@@ -142,6 +166,15 @@ func (s *VoucherController) PostCreateVoucher(c *gin.Context) {
 	})
 }
 
+// EditVoucher	goDocs
+// @Summary      edit voucher for admin user
+// @Description  edit voucher for admin user, need credential ADMIN user only
+// @Tags         Voucher
+// @Param				 id path int true "edit by id"
+// @Param				 Authorization	header		string	true	"Bearer {token}" default(Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQGV4YW1wbGUuY29tIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTcyNTU5ODc3OX0.JamULnKlo3q38ZgIhfBOUI8U2WEv4nNfaLYvodtIx0c)
+// @Param        tags body PostCreateVoucherRequest true "Body Request"
+// @Produce      application/json
+// @Router       /voucher/{id} [put]
 func (s *VoucherController) PutEditVoucher(c *gin.Context) {
 	// bind data
 	var req PostCreateVoucherRequest
@@ -194,6 +227,14 @@ func (s *VoucherController) PutEditVoucher(c *gin.Context) {
 	})
 }
 
+// DeleteVoucher	goDocs
+// @Summary      delete voucher for admin user
+// @Description  delete voucher for admin user, need credential ADMIN user only
+// @Tags         Voucher
+// @Param				 id path int true "delete by id"
+// @Param				 Authorization	header		string	true	"Bearer {token}" default(Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQGV4YW1wbGUuY29tIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTcyNTU5ODc3OX0.JamULnKlo3q38ZgIhfBOUI8U2WEv4nNfaLYvodtIx0c)
+// @Produce      application/json
+// @Router       /voucher/{id} [delete]
 func (s *VoucherController) DeleteVoucher(c *gin.Context) {
 	// log
 	logCtx := log.WithFields(log.Fields{

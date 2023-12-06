@@ -1,0 +1,538 @@
+definitions:
+  controllers.PostCreateCartFromItemRequest:
+    properties:
+      item_id:
+        type: integer
+      qty:
+        type: integer
+    required:
+    - item_id
+    - qty
+    type: object
+  controllers.PostCreateItemRequest:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      qty:
+        type: integer
+    required:
+    - description
+    - name
+    - price
+    - qty
+    type: object
+  controllers.PostCreateOrderRequest:
+    properties:
+      address:
+        type: string
+      phone_number:
+        type: string
+      voucher_code:
+        type: string
+    type: object
+  controllers.PostCreateVoucherRequest:
+    properties:
+      code:
+        type: string
+      description:
+        type: string
+      max:
+        type: number
+      name:
+        type: string
+      percentage:
+        type: number
+    required:
+    - code
+    - description
+    - max
+    - name
+    - percentage
+    type: object
+  controllers.PostLoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  controllers.PostRegisterRequest:
+    properties:
+      address:
+        type: string
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      phone_number:
+        type: string
+    required:
+    - address
+    - email
+    - name
+    - password
+    - phone_number
+    type: object
+  controllers.PutEditCartRequest:
+    properties:
+      qty:
+        type: integer
+    required:
+    - qty
+    type: object
+  controllers.PutEditItemRequest:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      qty:
+        type: integer
+    required:
+    - description
+    - name
+    - price
+    - qty
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a API for Online Shopping Cart API.
+  title: Online Shopping Cart API
+  version: "1.0"
+paths:
+  /cart:
+    post:
+      description: add to own cart from item, need credential
+      parameters:
+      - default: Bearer {token}
+        description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Body Request
+        in: body
+        name: tags
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.PostCreateCartFromItemRequest'
+      produces:
+      - application/json
+      responses: {}
+      summary: add to own cart from item
+      tags:
+      - Cart
+  /cart/{id}:
+    delete:
+      description: delete item by own cart cart, need credential
+      parameters:
+      - description: delete by id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: Bearer {token}
+        description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: delete item by own cart id
+      tags:
+      - Cart
+    get:
+      description: get one own carts detail, need credentials
+      parameters:
+      - description: get detail by id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: Bearer {token}
+        description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: get one own carts detail
+      tags:
+      - Cart
+    put:
+      description: update qty of item in cart, delete it if qty 0, failed when qty
+        item < qty, need credential
+      parameters:
+      - description: edit by id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: Bearer {token}
+        description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Body Request
+        in: body
+        name: tags
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.PutEditCartRequest'
+      produces:
+      - application/json
+      responses: {}
+      summary: update qty of item in cart
+      tags:
+      - Cart
+  /cart/all:
+    get:
+      description: get all own carts. need credentials.
+      parameters:
+      - default: Bearer {token}
+        description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: get all own carts
+      tags:
+      - Cart
+  /item:
+    post:
+      description: add item for admin user, need credential ADMIN user only
+      parameters:
+      - default: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQGV4YW1wbGUuY29tIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTcyNTU5ODc3OX0.JamULnKlo3q38ZgIhfBOUI8U2WEv4nNfaLYvodtIx0c
+        description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Body Request
+        in: body
+        name: tags
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.PostCreateItemRequest'
+      produces:
+      - application/json
+      responses: {}
+      summary: add item for admin user
+      tags:
+      - Item
+  /item/{id}:
+    delete:
+      description: delete item for admin user, need credential ADMIN user only
+      parameters:
+      - description: delete by id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQGV4YW1wbGUuY29tIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTcyNTU5ODc3OX0.JamULnKlo3q38ZgIhfBOUI8U2WEv4nNfaLYvodtIx0c
+        description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: delete item for admin user
+      tags:
+      - Item
+    get:
+      description: get one item detail, need credentials
+      parameters:
+      - description: get detail by id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: Bearer {token}
+        description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: get one item detail
+      tags:
+      - Item
+    put:
+      description: edit item for admin user, need credential ADMIN user only
+      parameters:
+      - description: edit by id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQGV4YW1wbGUuY29tIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTcyNTU5ODc3OX0.JamULnKlo3q38ZgIhfBOUI8U2WEv4nNfaLYvodtIx0c
+        description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Body Request
+        in: body
+        name: tags
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.PutEditItemRequest'
+      produces:
+      - application/json
+      responses: {}
+      summary: edit item for admin user
+      tags:
+      - Item
+  /item/all:
+    get:
+      description: get all item need credentials
+      parameters:
+      - default: Bearer {token}
+        description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: name item
+        in: query
+        name: name
+        type: string
+      - description: min price item
+        in: query
+        name: min_price
+        type: string
+      - description: max price item
+        in: query
+        name: max_price
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: get all item
+      tags:
+      - Item
+  /login:
+    post:
+      description: login account with return JWT token
+      parameters:
+      - description: Body Request
+        in: body
+        name: tags
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.PostLoginRequest'
+      produces:
+      - application/json
+      responses: {}
+      summary: login an account
+      tags:
+      - Account
+  /order:
+    post:
+      description: create order from cart, need credential
+      parameters:
+      - default: Bearer {token}
+        description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Body Request
+        in: body
+        name: tags
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.PostCreateOrderRequest'
+      produces:
+      - application/json
+      responses: {}
+      summary: create order from cart
+      tags:
+      - Order
+  /order/{id}:
+    get:
+      description: get one own order detail, need credentials
+      parameters:
+      - description: get detail by id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: Bearer {token}
+        description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: get one own order detail
+      tags:
+      - Order
+  /order/all:
+    get:
+      description: get all own order need credentials
+      parameters:
+      - default: Bearer {token}
+        description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: get all own order
+      tags:
+      - Order
+  /register:
+    post:
+      description: register account with type CUSTOMER
+      parameters:
+      - description: Body Request
+        in: body
+        name: tags
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.PostRegisterRequest'
+      produces:
+      - application/json
+      responses: {}
+      summary: register an account
+      tags:
+      - Account
+  /voucher:
+    post:
+      description: add voucher for admin user, need credential ADMIN user only
+      parameters:
+      - default: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQGV4YW1wbGUuY29tIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTcyNTU5ODc3OX0.JamULnKlo3q38ZgIhfBOUI8U2WEv4nNfaLYvodtIx0c
+        description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Body Request
+        in: body
+        name: tags
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.PostCreateVoucherRequest'
+      produces:
+      - application/json
+      responses: {}
+      summary: add voucher for admin user
+      tags:
+      - Voucher
+  /voucher/{id}:
+    delete:
+      description: delete voucher for admin user, need credential ADMIN user only
+      parameters:
+      - description: delete by id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQGV4YW1wbGUuY29tIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTcyNTU5ODc3OX0.JamULnKlo3q38ZgIhfBOUI8U2WEv4nNfaLYvodtIx0c
+        description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: delete voucher for admin user
+      tags:
+      - Voucher
+    get:
+      description: get one voucher detail, need credentials
+      parameters:
+      - description: get detail by id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: Bearer {token}
+        description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: get one voucher detail
+      tags:
+      - Voucher
+    put:
+      description: edit voucher for admin user, need credential ADMIN user only
+      parameters:
+      - description: edit by id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQGV4YW1wbGUuY29tIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTcyNTU5ODc3OX0.JamULnKlo3q38ZgIhfBOUI8U2WEv4nNfaLYvodtIx0c
+        description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Body Request
+        in: body
+        name: tags
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.PostCreateVoucherRequest'
+      produces:
+      - application/json
+      responses: {}
+      summary: edit voucher for admin user
+      tags:
+      - Voucher
+  /voucher/all:
+    get:
+      description: get all voucher need credentials
+      parameters:
+      - default: Bearer {token}
+        description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: code voucher
+        in: query
+        name: code
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: get all voucher
+      tags:
+      - Voucher
+swagger: "2.0"

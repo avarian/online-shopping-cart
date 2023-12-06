@@ -8,7 +8,7 @@ import (
 
 type Voucher struct {
 	ID          uint            `json:"id" gorm:"not null"`
-	Code        string          `json:"code" gorm:"not null;size:255"`
+	Code        string          `json:"code" gorm:"unique;not null;size:255"`
 	Name        string          `json:"name" gorm:"not null;size:255"`
 	Description string          `json:"description"`
 	Percentage  float64         `json:"percentage" gorm:"not null;size:255"`

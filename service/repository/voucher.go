@@ -24,6 +24,13 @@ func NewVoucherRepository(db *gorm.DB) *VoucherRepository {
 
 func (s *VoucherRepository) FilterScope(r *http.Request) func(db *gorm.DB) *gorm.DB {
 	return func(db *gorm.DB) *gorm.DB {
+		q := r.URL.Query()
+		code := q.Get("code")
+		if code != "" {
+			if code != "" {
+				db = db.Where("LOWER(code) = LOWER(?)", code)
+			}
+		}
 		return db
 	}
 }
@@ -123,6 +130,17 @@ func (s *VoucherRepository) One(r *http.Request, preload ...string) (model.Vouch
 func (s *VoucherRepository) OneById(id int, preload ...string) (model.Voucher, *gorm.DB) {
 	var table model.Voucher
 	tx := s.db.Where("id = ?", id)
+	for _, v := range preload {
+		tx = tx.Preload(v)
+	}
+	query := tx.Find(&table)
+
+	return table, query
+}
+
+func (s *VoucherRepository) OneByCode(code string, preload ...string) (model.Voucher, *gorm.DB) {
+	var table model.Voucher
+	tx := s.db.Where("code = ?", code)
 	for _, v := range preload {
 		tx = tx.Preload(v)
 	}

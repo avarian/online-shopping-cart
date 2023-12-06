@@ -109,6 +109,17 @@ func (s *OrderRepository) All(r *http.Request, preload ...string) ([]model.Order
 	return table, query
 }
 
+func (s *OrderRepository) AllByAccountId(accountId int, preload ...string) ([]model.Order, *gorm.DB) {
+	var table []model.Order
+	tx := s.db.Where("account_id = ?", accountId)
+	for _, v := range preload {
+		tx = tx.Preload(v)
+	}
+	query := tx.Find(&table)
+
+	return table, query
+}
+
 func (s *OrderRepository) One(r *http.Request, preload ...string) (model.Order, *gorm.DB) {
 	var table model.Order
 	tx := s.db.Scopes(s.FilterScope(r))
@@ -123,6 +134,17 @@ func (s *OrderRepository) One(r *http.Request, preload ...string) (model.Order, 
 func (s *OrderRepository) OneById(id int, preload ...string) (model.Order, *gorm.DB) {
 	var table model.Order
 	tx := s.db.Where("id = ?", id)
+	for _, v := range preload {
+		tx = tx.Preload(v)
+	}
+	query := tx.Find(&table)
+
+	return table, query
+}
+
+func (s *OrderRepository) OneByIdAndAccountId(id int, accountId int, preload ...string) (model.Order, *gorm.DB) {
+	var table model.Order
+	tx := s.db.Where("id = ? AND account_id = ?", id, accountId)
 	for _, v := range preload {
 		tx = tx.Preload(v)
 	}

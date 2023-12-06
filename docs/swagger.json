@@ -1,0 +1,776 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a API for Online Shopping Cart API.",
+    "title": "Online Shopping Cart API",
+    "contact": {},
+    "version": "1.0"
+  },
+  "host": "localhost:8080",
+  "paths": {
+    "/cart": {
+      "post": {
+        "description": "add to own cart from item, need credential",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Cart"
+        ],
+        "summary": "add to own cart from item",
+        "parameters": [
+          {
+            "type": "string",
+            "default": "Bearer {token}",
+            "description": "Bearer {token}",
+            "name": "Authorization",
+            "in": "header",
+            "required": true
+          },
+          {
+            "description": "Body Request",
+            "name": "tags",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/controllers.PostCreateCartFromItemRequest"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/cart/all": {
+      "get": {
+        "description": "get all own carts. need credentials.",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Cart"
+        ],
+        "summary": "get all own carts",
+        "parameters": [
+          {
+            "type": "string",
+            "default": "Bearer {token}",
+            "description": "Bearer {token}",
+            "name": "Authorization",
+            "in": "header",
+            "required": true
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/cart/{id}": {
+      "get": {
+        "description": "get one own carts detail, need credentials",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Cart"
+        ],
+        "summary": "get one own carts detail",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "get detail by id",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "default": "Bearer {token}",
+            "description": "Bearer {token}",
+            "name": "Authorization",
+            "in": "header",
+            "required": true
+          }
+        ],
+        "responses": {}
+      },
+      "put": {
+        "description": "update qty of item in cart, delete it if qty 0, failed when qty item \u003c qty, need credential",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Cart"
+        ],
+        "summary": "update qty of item in cart",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "edit by id",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "default": "Bearer {token}",
+            "description": "Bearer {token}",
+            "name": "Authorization",
+            "in": "header",
+            "required": true
+          },
+          {
+            "description": "Body Request",
+            "name": "tags",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/controllers.PutEditCartRequest"
+            }
+          }
+        ],
+        "responses": {}
+      },
+      "delete": {
+        "description": "delete item by own cart cart, need credential",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Cart"
+        ],
+        "summary": "delete item by own cart id",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "delete by id",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "default": "Bearer {token}",
+            "description": "Bearer {token}",
+            "name": "Authorization",
+            "in": "header",
+            "required": true
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/item": {
+      "post": {
+        "description": "add item for admin user, need credential ADMIN user only",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Item"
+        ],
+        "summary": "add item for admin user",
+        "parameters": [
+          {
+            "type": "string",
+            "default": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQGV4YW1wbGUuY29tIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTcyNTU5ODc3OX0.JamULnKlo3q38ZgIhfBOUI8U2WEv4nNfaLYvodtIx0c",
+            "description": "Bearer {token}",
+            "name": "Authorization",
+            "in": "header",
+            "required": true
+          },
+          {
+            "description": "Body Request",
+            "name": "tags",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/controllers.PostCreateItemRequest"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/item/all": {
+      "get": {
+        "description": "get all item need credentials",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Item"
+        ],
+        "summary": "get all item",
+        "parameters": [
+          {
+            "type": "string",
+            "default": "Bearer {token}",
+            "description": "Bearer {token}",
+            "name": "Authorization",
+            "in": "header",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "name item",
+            "name": "name",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "min price item",
+            "name": "min_price",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "max price item",
+            "name": "max_price",
+            "in": "query"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/item/{id}": {
+      "get": {
+        "description": "get one item detail, need credentials",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Item"
+        ],
+        "summary": "get one item detail",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "get detail by id",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "default": "Bearer {token}",
+            "description": "Bearer {token}",
+            "name": "Authorization",
+            "in": "header",
+            "required": true
+          }
+        ],
+        "responses": {}
+      },
+      "put": {
+        "description": "edit item for admin user, need credential ADMIN user only",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Item"
+        ],
+        "summary": "edit item for admin user",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "edit by id",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "default": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQGV4YW1wbGUuY29tIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTcyNTU5ODc3OX0.JamULnKlo3q38ZgIhfBOUI8U2WEv4nNfaLYvodtIx0c",
+            "description": "Bearer {token}",
+            "name": "Authorization",
+            "in": "header",
+            "required": true
+          },
+          {
+            "description": "Body Request",
+            "name": "tags",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/controllers.PutEditItemRequest"
+            }
+          }
+        ],
+        "responses": {}
+      },
+      "delete": {
+        "description": "delete item for admin user, need credential ADMIN user only",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Item"
+        ],
+        "summary": "delete item for admin user",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "delete by id",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "default": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQGV4YW1wbGUuY29tIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTcyNTU5ODc3OX0.JamULnKlo3q38ZgIhfBOUI8U2WEv4nNfaLYvodtIx0c",
+            "description": "Bearer {token}",
+            "name": "Authorization",
+            "in": "header",
+            "required": true
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/login": {
+      "post": {
+        "description": "login account with return JWT token",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Account"
+        ],
+        "summary": "login an account",
+        "parameters": [
+          {
+            "description": "Body Request",
+            "name": "tags",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/controllers.PostLoginRequest"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/order": {
+      "post": {
+        "description": "create order from cart, need credential",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Order"
+        ],
+        "summary": "create order from cart",
+        "parameters": [
+          {
+            "type": "string",
+            "default": "Bearer {token}",
+            "description": "Bearer {token}",
+            "name": "Authorization",
+            "in": "header",
+            "required": true
+          },
+          {
+            "description": "Body Request",
+            "name": "tags",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/controllers.PostCreateOrderRequest"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/order/all": {
+      "get": {
+        "description": "get all own order need credentials",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Order"
+        ],
+        "summary": "get all own order",
+        "parameters": [
+          {
+            "type": "string",
+            "default": "Bearer {token}",
+            "description": "Bearer {token}",
+            "name": "Authorization",
+            "in": "header",
+            "required": true
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/order/{id}": {
+      "get": {
+        "description": "get one own order detail, need credentials",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Order"
+        ],
+        "summary": "get one own order detail",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "get detail by id",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "default": "Bearer {token}",
+            "description": "Bearer {token}",
+            "name": "Authorization",
+            "in": "header",
+            "required": true
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/register": {
+      "post": {
+        "description": "register account with type CUSTOMER",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Account"
+        ],
+        "summary": "register an account",
+        "parameters": [
+          {
+            "description": "Body Request",
+            "name": "tags",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/controllers.PostRegisterRequest"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/voucher": {
+      "post": {
+        "description": "add voucher for admin user, need credential ADMIN user only",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Voucher"
+        ],
+        "summary": "add voucher for admin user",
+        "parameters": [
+          {
+            "type": "string",
+            "default": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQGV4YW1wbGUuY29tIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTcyNTU5ODc3OX0.JamULnKlo3q38ZgIhfBOUI8U2WEv4nNfaLYvodtIx0c",
+            "description": "Bearer {token}",
+            "name": "Authorization",
+            "in": "header",
+            "required": true
+          },
+          {
+            "description": "Body Request",
+            "name": "tags",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/controllers.PostCreateVoucherRequest"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/voucher/all": {
+      "get": {
+        "description": "get all voucher need credentials",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Voucher"
+        ],
+        "summary": "get all voucher",
+        "parameters": [
+          {
+            "type": "string",
+            "default": "Bearer {token}",
+            "description": "Bearer {token}",
+            "name": "Authorization",
+            "in": "header",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "code voucher",
+            "name": "code",
+            "in": "query"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/voucher/{id}": {
+      "get": {
+        "description": "get one voucher detail, need credentials",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Voucher"
+        ],
+        "summary": "get one voucher detail",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "get detail by id",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "default": "Bearer {token}",
+            "description": "Bearer {token}",
+            "name": "Authorization",
+            "in": "header",
+            "required": true
+          }
+        ],
+        "responses": {}
+      },
+      "put": {
+        "description": "edit voucher for admin user, need credential ADMIN user only",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Voucher"
+        ],
+        "summary": "edit voucher for admin user",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "edit by id",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "default": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQGV4YW1wbGUuY29tIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTcyNTU5ODc3OX0.JamULnKlo3q38ZgIhfBOUI8U2WEv4nNfaLYvodtIx0c",
+            "description": "Bearer {token}",
+            "name": "Authorization",
+            "in": "header",
+            "required": true
+          },
+          {
+            "description": "Body Request",
+            "name": "tags",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/controllers.PostCreateVoucherRequest"
+            }
+          }
+        ],
+        "responses": {}
+      },
+      "delete": {
+        "description": "delete voucher for admin user, need credential ADMIN user only",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Voucher"
+        ],
+        "summary": "delete voucher for admin user",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "delete by id",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "default": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQGV4YW1wbGUuY29tIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInR5cGUiOiJBRE1JTiIsImV4cCI6MTcyNTU5ODc3OX0.JamULnKlo3q38ZgIhfBOUI8U2WEv4nNfaLYvodtIx0c",
+            "description": "Bearer {token}",
+            "name": "Authorization",
+            "in": "header",
+            "required": true
+          }
+        ],
+        "responses": {}
+      }
+    }
+  },
+  "definitions": {
+    "controllers.PostCreateCartFromItemRequest": {
+      "type": "object",
+      "required": [
+        "item_id",
+        "qty"
+      ],
+      "properties": {
+        "item_id": {
+          "type": "integer"
+        },
+        "qty": {
+          "type": "integer"
+        }
+      }
+    },
+    "controllers.PostCreateItemRequest": {
+      "type": "object",
+      "required": [
+        "description",
+        "name",
+        "price",
+        "qty"
+      ],
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number"
+        },
+        "qty": {
+          "type": "integer"
+        }
+      }
+    },
+    "controllers.PostCreateOrderRequest": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "phone_number": {
+          "type": "string"
+        },
+        "voucher_code": {
+          "type": "string"
+        }
+      }
+    },
+    "controllers.PostCreateVoucherRequest": {
+      "type": "object",
+      "required": [
+        "code",
+        "description",
+        "max",
+        "name",
+        "percentage"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "max": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "percentage": {
+          "type": "number"
+        }
+      }
+    },
+    "controllers.PostLoginRequest": {
+      "type": "object",
+      "required": [
+        "email",
+        "password"
+      ],
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "controllers.PostRegisterRequest": {
+      "type": "object",
+      "required": [
+        "address",
+        "email",
+        "name",
+        "password",
+        "phone_number"
+      ],
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "phone_number": {
+          "type": "string"
+        }
+      }
+    },
+    "controllers.PutEditCartRequest": {
+      "type": "object",
+      "required": [
+        "qty"
+      ],
+      "properties": {
+        "qty": {
+          "type": "integer"
+        }
+      }
+    },
+    "controllers.PutEditItemRequest": {
+      "type": "object",
+      "required": [
+        "description",
+        "name",
+        "price",
+        "qty"
+      ],
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number"
+        },
+        "qty": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

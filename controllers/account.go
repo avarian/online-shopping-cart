@@ -50,6 +50,13 @@ func NewAccountController(db *gorm.DB, validator *util.Validator, jwtSecret stri
 	}
 }
 
+// RegisterAccount	goDocs
+// @Summary      register an account
+// @Description  register account with type CUSTOMER
+// @Tags         Account
+// @Produce      application/json
+// @Param        tags body PostRegisterRequest true "Body Request"
+// @Router       /register [post]
 func (s *AccountController) PostRegister(c *gin.Context) {
 	// bind data
 	var req PostRegisterRequest
@@ -101,6 +108,13 @@ func (s *AccountController) PostRegister(c *gin.Context) {
 	})
 }
 
+// LoginAccount	goDocs
+// @Summary      login an account
+// @Description  login account with return JWT token
+// @Tags         Account
+// @Produce      application/json
+// @Param        tags body PostLoginRequest true "Body Request"
+// @Router       /login [post]
 func (s *AccountController) PostLogin(c *gin.Context) {
 	// bind data
 	var req PostLoginRequest

@@ -24,6 +24,26 @@ func NewItemRepository(db *gorm.DB) *ItemRepository {
 
 func (s *ItemRepository) FilterScope(r *http.Request) func(db *gorm.DB) *gorm.DB {
 	return func(db *gorm.DB) *gorm.DB {
+		q := r.URL.Query()
+		name := q.Get("name")
+		if name != "" {
+			if name != "" {
+				db = db.Where("LOWER(name) LIKE LOWER(?)", "%"+name+"%")
+			}
+		}
+		minPrice := q.Get("min_price")
+		if minPrice != "" {
+			if name != "" {
+				db = db.Where("price > ?", minPrice)
+			}
+		}
+		maxPrice := q.Get("max_price")
+		if maxPrice != "" {
+			if name != "" {
+				db = db.Where("price < ?", maxPrice)
+			}
+		}
+
 		return db
 	}
 }

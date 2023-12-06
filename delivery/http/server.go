@@ -8,6 +8,8 @@ import (
 	"github.com/avarian/online-shopping-cart/controllers"
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 type Server struct {
@@ -21,12 +23,17 @@ func NewServer(listenAddress string,
 	item *controllers.ItemController,
 	cart *controllers.CartController,
 	voucher *controllers.VoucherController,
+	order *controllers.OrderController,
 ) *Server {
 
 	router := gin.Default()
 	//
 	// Http Routings
 	//
+
+	// add swagger
+	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 	router.GET("/", home.GetHome)
 	router.POST("/register", account.PostRegister)
 	router.POST("/login", account.PostLogin)
@@ -56,6 +63,13 @@ func NewServer(listenAddress string,
 		voucherRoute.Use(Admin()).POST("/", voucher.PostCreateVoucher)
 		voucherRoute.Use(Admin()).PUT("/:id", voucher.PutEditVoucher)
 		voucherRoute.Use(Admin()).DELETE("/:id", voucher.DeleteVoucher)
+	}
+
+	orderRoute := router.Group("/order").Use(Auth())
+	{
+		orderRoute.GET("/all", order.GetOrders)
+		orderRoute.GET("/:id", order.GetOrderDetail)
+		orderRoute.POST("/", order.PostCreateOrder)
 	}
 
 	httpServer := &http.Server{

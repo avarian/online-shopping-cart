@@ -35,6 +35,13 @@ func NewCartController(db *gorm.DB, validator *util.Validator) *CartController {
 	}
 }
 
+// GetAllCarts	goDocs
+// @Summary      get all own carts
+// @Description  get all own carts. need credentials.
+// @Tags         Cart
+// @Param				 Authorization	header		string	true	"Bearer {token}" default(Bearer {token})
+// @Produce      application/json
+// @Router       /cart/all [get]
 func (s *CartController) GetCarts(c *gin.Context) {
 	// log
 	logCtx := log.WithFields(log.Fields{
@@ -68,6 +75,14 @@ func (s *CartController) GetCarts(c *gin.Context) {
 	})
 }
 
+// GetOneCartDetail	goDocs
+// @Summary      get one own carts detail
+// @Description  get one own carts detail, need credentials
+// @Tags         Cart
+// @Param				 id path int true "get detail by id"
+// @Param				 Authorization	header		string	true	"Bearer {token}" default(Bearer {token})
+// @Produce      application/json
+// @Router       /cart/{id} [get]
 func (s *CartController) GetCartDetail(c *gin.Context) {
 	// log
 	logCtx := log.WithFields(log.Fields{
@@ -113,6 +128,14 @@ func (s *CartController) GetCartDetail(c *gin.Context) {
 	})
 }
 
+// AddToCart	goDocs
+// @Summary      add to own cart from item
+// @Description  add to own cart from item, need credential
+// @Tags         Cart
+// @Param				 Authorization	header		string	true	"Bearer {token}" default(Bearer {token})
+// @Param        tags body PostCreateCartFromItemRequest true "Body Request"
+// @Produce      application/json
+// @Router       /cart [post]
 func (s *CartController) PostCreateCartFromItem(c *gin.Context) {
 	// bind data
 	var req PostCreateCartFromItemRequest
@@ -169,7 +192,7 @@ func (s *CartController) PostCreateCartFromItem(c *gin.Context) {
 	cart, result := cartRepo.Create(model.Cart{
 		AccountID: account.ID,
 		ItemID:    item.ID,
-		Qty:       req.ItemId,
+		Qty:       req.Qty,
 		CreatedBy: username,
 	})
 	if result.Error != nil {
@@ -184,6 +207,15 @@ func (s *CartController) PostCreateCartFromItem(c *gin.Context) {
 	})
 }
 
+// EditQtyCart	goDocs
+// @Summary      update qty of item in cart
+// @Description  update qty of item in cart, delete it if qty 0, failed when qty item < qty, need credential
+// @Tags         Cart
+// @Param				 id path int true "edit by id"
+// @Param				 Authorization	header		string	true	"Bearer {token}" default(Bearer {token})
+// @Param        tags body PutEditCartRequest true "Body Request"
+// @Produce      application/json
+// @Router       /cart/{id} [put]
 func (s *CartController) PutEditCart(c *gin.Context) {
 	// bind data
 	var req PutEditCartRequest
@@ -266,6 +298,14 @@ func (s *CartController) PutEditCart(c *gin.Context) {
 	})
 }
 
+// deleteCart	goDocs
+// @Summary      delete item by own cart id
+// @Description  delete item by own cart cart, need credential
+// @Tags         Cart
+// @Param				 id path int true "delete by id"
+// @Param				 Authorization	header		string	true	"Bearer {token}" default(Bearer {token})
+// @Produce      application/json
+// @Router       /cart/{id} [delete]
 func (s *CartController) DeleteCart(c *gin.Context) {
 	// log
 	logCtx := log.WithFields(log.Fields{
