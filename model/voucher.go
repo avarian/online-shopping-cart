@@ -13,7 +13,6 @@ type Voucher struct {
 	Description string          `json:"description"`
 	Percentage  float64         `json:"percentage" gorm:"not null;size:255"`
 	Max         float64         `json:"price"  gorm:"not null;size:255"`
-	IsActive    bool            `json:"bool"  gorm:"not null"`
 	CreatedBy   string          `json:"created_by" gorm:"size:255;default:SYSTEM"`
 	UpdatedBy   string          `json:"updated_by" gorm:"size:255;default:SYSTEM"`
 	DeletedBy   string          `json:"deleted_by" gorm:"size:255"`

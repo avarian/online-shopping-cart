@@ -74,7 +74,12 @@ func (s *AccountRepository) MetaPaginate(r *http.Request) map[string]interface{}
 		pageSize = 10
 	}
 	totalPages := int(math.Ceil(float64(totalRows) / float64(pageSize)))
+	page, _ := strconv.Atoi(q.Get("page"))
+	if page == 0 {
+		page = 1
+	}
 	meta := map[string]interface{}{
+		"page":        page,
 		"page_size":   pageSize,
 		"total_rows":  totalRows,
 		"total_pages": totalPages,
@@ -86,18 +91,18 @@ func (s *AccountRepository) Index(r *http.Request, preload ...string) ([]model.A
 	var table []model.Account
 	tx := s.db.Scopes(s.FilterScope(r), s.PaginateScope(r))
 	for _, v := range preload {
-		tx.Preload(v)
+		tx = tx.Preload(v)
 	}
 	query := tx.Find(&table)
 
 	return table, query
 }
 
-func (s *AccountRepository) All(preload ...string) ([]model.Account, *gorm.DB) {
+func (s *AccountRepository) All(r *http.Request, preload ...string) ([]model.Account, *gorm.DB) {
 	var table []model.Account
-	tx := s.db
+	tx := s.db.Scopes(s.FilterScope(r))
 	for _, v := range preload {
-		tx.Preload(v)
+		tx = tx.Preload(v)
 	}
 	query := tx.Find(&table)
 
@@ -108,7 +113,7 @@ func (s *AccountRepository) One(r *http.Request, preload ...string) (model.Accou
 	var table model.Account
 	tx := s.db.Scopes(s.FilterScope(r))
 	for _, v := range preload {
-		tx.Preload(v)
+		tx = tx.Preload(v)
 	}
 	query := tx.Find(&table)
 
@@ -119,7 +124,7 @@ func (s *AccountRepository) OneById(id int, preload ...string) (model.Account, *
 	var table model.Account
 	tx := s.db.Where("id = ?", id)
 	for _, v := range preload {
-		tx.Preload(v)
+		tx = tx.Preload(v)
 	}
 	query := tx.Find(&table)
 
@@ -148,7 +153,7 @@ func (s *AccountRepository) Update(id int, data model.Account) (model.Account, *
 func (s *AccountRepository) Delete(id int, isHard bool) *gorm.DB {
 	tx := s.db
 	if isHard {
-		tx.Unscoped()
+		tx = tx.Unscoped()
 	}
 	query := tx.Delete(&model.Account{}, id)
 	return query
@@ -171,7 +176,7 @@ func (s *AccountRepository) OneByEmail(email string, preload ...string) (model.A
 	var table model.Account
 	tx := s.db.Where("email = ?", email)
 	for _, v := range preload {
-		tx.Preload(v)
+		tx = tx.Preload(v)
 	}
 	query := tx.Find(&table)
 

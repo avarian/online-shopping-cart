@@ -8,8 +8,8 @@ import (
 
 type Cart struct {
 	ID        uint            `json:"id" gorm:"not null"`
-	AccountID uint            `json:"account_id" gorm:"not null"`
-	ItemID    uint            `json:"item_id" gorm:"not null"`
+	AccountID uint            `json:"account_id" gorm:"uniqueIndex:idx_account_item_key;not null"`
+	ItemID    uint            `json:"item_id" gorm:"uniqueIndex:idx_account_item_key;not null"`
 	Qty       int             `json:"qty"  gorm:"not null"`
 	CreatedBy string          `json:"created_by" gorm:"size:255;default:SYSTEM"`
 	UpdatedBy string          `json:"updated_by" gorm:"size:255;default:SYSTEM"`

@@ -74,7 +74,12 @@ func (s *CartRepository) MetaPaginate(r *http.Request) map[string]interface{} {
 		pageSize = 10
 	}
 	totalPages := int(math.Ceil(float64(totalRows) / float64(pageSize)))
+	page, _ := strconv.Atoi(q.Get("page"))
+	if page == 0 {
+		page = 1
+	}
 	meta := map[string]interface{}{
+		"page":        page,
 		"page_size":   pageSize,
 		"total_rows":  totalRows,
 		"total_pages": totalPages,
@@ -86,18 +91,29 @@ func (s *CartRepository) Index(r *http.Request, preload ...string) ([]model.Cart
 	var table []model.Cart
 	tx := s.db.Scopes(s.FilterScope(r), s.PaginateScope(r))
 	for _, v := range preload {
-		tx.Preload(v)
+		tx = tx.Preload(v)
 	}
 	query := tx.Find(&table)
 
 	return table, query
 }
 
-func (s *CartRepository) All(preload ...string) ([]model.Cart, *gorm.DB) {
+func (s *CartRepository) All(r *http.Request, preload ...string) ([]model.Cart, *gorm.DB) {
 	var table []model.Cart
-	tx := s.db
+	tx := s.db.Scopes(s.FilterScope(r))
 	for _, v := range preload {
-		tx.Preload(v)
+		tx = tx.Preload(v)
+	}
+	query := tx.Find(&table)
+
+	return table, query
+}
+
+func (s *CartRepository) AllByAccountId(accountId int, preload ...string) ([]model.Cart, *gorm.DB) {
+	var table []model.Cart
+	tx := s.db.Where("account_id = ?", accountId)
+	for _, v := range preload {
+		tx = tx.Preload(v)
 	}
 	query := tx.Find(&table)
 
@@ -108,7 +124,7 @@ func (s *CartRepository) One(r *http.Request, preload ...string) (model.Cart, *g
 	var table model.Cart
 	tx := s.db.Scopes(s.FilterScope(r))
 	for _, v := range preload {
-		tx.Preload(v)
+		tx = tx.Preload(v)
 	}
 	query := tx.Find(&table)
 
@@ -119,7 +135,18 @@ func (s *CartRepository) OneById(id int, preload ...string) (model.Cart, *gorm.D
 	var table model.Cart
 	tx := s.db.Where("id = ?", id)
 	for _, v := range preload {
-		tx.Preload(v)
+		tx = tx.Preload(v)
+	}
+	query := tx.Find(&table)
+
+	return table, query
+}
+
+func (s *CartRepository) OneByIdAndAccountId(id int, accountId int, preload ...string) (model.Cart, *gorm.DB) {
+	var table model.Cart
+	tx := s.db.Where("id = ? AND account_id = ?", id, accountId)
+	for _, v := range preload {
+		tx = tx.Preload(v)
 	}
 	query := tx.Find(&table)
 
@@ -148,7 +175,7 @@ func (s *CartRepository) Update(id int, data model.Cart) (model.Cart, *gorm.DB) 
 func (s *CartRepository) Delete(id int, isHard bool) *gorm.DB {
 	tx := s.db
 	if isHard {
-		tx.Unscoped()
+		tx = tx.Unscoped()
 	}
 	query := tx.Delete(&model.Cart{}, id)
 	return query

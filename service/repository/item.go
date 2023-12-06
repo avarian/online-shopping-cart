@@ -74,7 +74,12 @@ func (s *ItemRepository) MetaPaginate(r *http.Request) map[string]interface{} {
 		pageSize = 10
 	}
 	totalPages := int(math.Ceil(float64(totalRows) / float64(pageSize)))
+	page, _ := strconv.Atoi(q.Get("page"))
+	if page == 0 {
+		page = 1
+	}
 	meta := map[string]interface{}{
+		"page":        page,
 		"page_size":   pageSize,
 		"total_rows":  totalRows,
 		"total_pages": totalPages,
@@ -86,18 +91,18 @@ func (s *ItemRepository) Index(r *http.Request, preload ...string) ([]model.Item
 	var table []model.Item
 	tx := s.db.Scopes(s.FilterScope(r), s.PaginateScope(r))
 	for _, v := range preload {
-		tx.Preload(v)
+		tx = tx.Preload(v)
 	}
 	query := tx.Find(&table)
 
 	return table, query
 }
 
-func (s *ItemRepository) All(preload ...string) ([]model.Item, *gorm.DB) {
+func (s *ItemRepository) All(r *http.Request, preload ...string) ([]model.Item, *gorm.DB) {
 	var table []model.Item
-	tx := s.db
+	tx := s.db.Scopes(s.FilterScope(r))
 	for _, v := range preload {
-		tx.Preload(v)
+		tx = tx.Preload(v)
 	}
 	query := tx.Find(&table)
 
@@ -108,7 +113,7 @@ func (s *ItemRepository) One(r *http.Request, preload ...string) (model.Item, *g
 	var table model.Item
 	tx := s.db.Scopes(s.FilterScope(r))
 	for _, v := range preload {
-		tx.Preload(v)
+		tx = tx.Preload(v)
 	}
 	query := tx.Find(&table)
 
@@ -119,7 +124,7 @@ func (s *ItemRepository) OneById(id int, preload ...string) (model.Item, *gorm.D
 	var table model.Item
 	tx := s.db.Where("id = ?", id)
 	for _, v := range preload {
-		tx.Preload(v)
+		tx = tx.Preload(v)
 	}
 	query := tx.Find(&table)
 
@@ -148,7 +153,7 @@ func (s *ItemRepository) Update(id int, data model.Item) (model.Item, *gorm.DB) 
 func (s *ItemRepository) Delete(id int, isHard bool) *gorm.DB {
 	tx := s.db
 	if isHard {
-		tx.Unscoped()
+		tx = tx.Unscoped()
 	}
 	query := tx.Delete(&model.Item{}, id)
 	return query

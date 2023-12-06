@@ -18,6 +18,9 @@ type Server struct {
 func NewServer(listenAddress string,
 	home *controllers.HomeController,
 	account *controllers.AccountController,
+	item *controllers.ItemController,
+	cart *controllers.CartController,
+	voucher *controllers.VoucherController,
 ) *Server {
 
 	router := gin.Default()
@@ -27,6 +30,33 @@ func NewServer(listenAddress string,
 	router.GET("/", home.GetHome)
 	router.POST("/register", account.PostRegister)
 	router.POST("/login", account.PostLogin)
+
+	itemRoute := router.Group("/item").Use(Auth())
+	{
+		itemRoute.GET("/all", item.GetItems)
+		itemRoute.GET("/:id", item.GetItemDetail)
+		itemRoute.Use(Admin()).POST("/", item.PostCreateItem)
+		itemRoute.Use(Admin()).PUT("/:id", item.PutEditItem)
+		itemRoute.Use(Admin()).DELETE("/:id", item.DeleteItem)
+	}
+
+	cartRoute := router.Group("/cart").Use(Auth())
+	{
+		cartRoute.GET("/all", cart.GetCarts)
+		cartRoute.GET("/:id", cart.GetCartDetail)
+		cartRoute.POST("/", cart.PostCreateCartFromItem)
+		cartRoute.PUT("/:id", cart.PutEditCart)
+		cartRoute.DELETE("/:id", cart.DeleteCart)
+	}
+
+	voucherRoute := router.Group("/voucher").Use(Auth())
+	{
+		voucherRoute.GET("/all", voucher.GetVouchers)
+		voucherRoute.GET("/:id", voucher.GetVoucherDetail)
+		voucherRoute.Use(Admin()).POST("/", voucher.PostCreateVoucher)
+		voucherRoute.Use(Admin()).PUT("/:id", voucher.PutEditVoucher)
+		voucherRoute.Use(Admin()).DELETE("/:id", voucher.DeleteVoucher)
+	}
 
 	httpServer := &http.Server{
 		Addr:              listenAddress,

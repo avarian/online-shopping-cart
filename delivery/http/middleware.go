@@ -40,6 +40,18 @@ func Auth() gin.HandlerFunc {
 	}
 }
 
+func Admin() gin.HandlerFunc {
+	return func(context *gin.Context) {
+		typeAccount := context.GetString("type")
+		if typeAccount != "ADMIN" {
+			context.JSON(http.StatusPreconditionFailed, gin.H{"error": "unauthorized"})
+			context.Abort()
+			return
+		}
+		context.Next()
+	}
+}
+
 func validateToken(signedToken string) (claims *JWTClaim, err error) {
 	token, err := jwt.ParseWithClaims(
 		signedToken,

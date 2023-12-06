@@ -49,10 +49,16 @@ func serveCommand() (err error) {
 	//
 	home := controllers.NewHomeController()
 	account := controllers.NewAccountController(db, validator, viper.GetString("jwt_secret"))
+	item := controllers.NewItemController(db, validator)
+	cart := controllers.NewCartController(db, validator)
+	voucher := controllers.NewVoucherController(db, validator)
 
 	server := http.NewServer(viper.GetString("listen_address"),
 		home,
 		account,
+		item,
+		cart,
+		voucher,
 	)
 
 	//
