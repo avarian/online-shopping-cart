@@ -46,7 +46,8 @@ func serveCommand() (err error) {
 	home := controllers.NewHomeController()
 
 	server := http.NewServer(viper.GetString("listen_address"),
-		home)
+		home,
+	)
 
 	//
 	// Start the process
