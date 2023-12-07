@@ -11,6 +11,11 @@ Start project
 ```shell
 docker-compose up
 ```
+
+Running Test
+```shell
+go test -v ./...
+```
 <br>
 
 Reset project database
